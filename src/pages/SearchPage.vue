@@ -63,7 +63,7 @@ let tagList = ref(originTagList);
  * 搜索过滤
  * @param val
  */
-const onSearch = (val) => {
+const onSearch = () => {
   tagList.value = originTagList.map(parentTag => {
     const tempChildren = [...parentTag.children];
     const tempParentTag = {...parentTag};
@@ -82,7 +82,7 @@ const activeIds = ref([]);
 const activeIndex = ref(0);
 
 // 移除标签
-const doClose = (tag) => {
+const doClose = (tag:string) => {
   activeIds.value = activeIds.value.filter(item => {
     return item !== tag;
   })
