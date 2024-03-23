@@ -54,6 +54,13 @@ const originTagList = [{
       {text: '大6', id: '大6aaaaaaa'},
     ],
   },
+  {
+    text: '学科',
+    children: [
+      {text: 'Java', id: 'Java'},
+      {text: 'Python', id: 'Python'},
+    ],
+  },
 ]
 
 // 标签列表
@@ -61,7 +68,6 @@ let tagList = ref(originTagList);
 
 /**
  * 搜索过滤
- * @param val
  */
 const onSearch = () => {
   tagList.value = originTagList.map(parentTag => {
