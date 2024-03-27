@@ -14,7 +14,6 @@ const routes = [
     {path: '/user', component: User},
     {path: '/search', component: SearchUser},
     {path: '/user/list', component: SearchResultPage},
-
     {path: '/user/edit', component: UserEdit},
     {path: '/user/login', component: UserLogin},
 
