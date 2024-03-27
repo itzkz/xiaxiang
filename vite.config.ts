@@ -9,5 +9,4 @@ export default defineConfig({
         Components({
             resolvers: [VantResolver()],
         }),],
-    //开发环境生效
 })

@@ -1,13 +1,13 @@
 <script setup>
-import { useRoute } from "vue-router";
+import {useRoute} from "vue-router";
 import myAxios from "../plugins/myAxios.ts";
-import { onMounted } from "vue";
-import { showToast } from "vant";
+import {onMounted} from "vue";
+import {showToast} from "vant";
 import qs from 'qs';
-import { ref } from "vue";
+import {ref} from "vue";
 
 const router = useRoute()
-const { tags } = router.query
+const {tags} = router.query
 const userList = ref([]);
 
 onMounted(async () => {
@@ -20,16 +20,16 @@ onMounted(async () => {
         return qs.stringify(params, {indices: false})
       }
     });
-    console.log('/user/search/tags succeed', response);
+    // console.log('/user/search/tags succeed', response);
     const userListData = response?.data?.data;
     if (userListData) {
-      userList.value = userListData;
       userListData.forEach(user => {
         if (user.tags && typeof user.tags === 'string') {
           user.tags = JSON.parse(user.tags);
         }
       });
-      console.log(userList.value, 1231231312312);
+      userList.value = userListData;
+
     }
   } catch (error) {
     console.error('/user/search/tags error', error);
@@ -39,6 +39,7 @@ onMounted(async () => {
 </script>
 
 <template>
+  <van-empty image="search" description="未查询到用户" v-if="!userList ||userList.length < 1"/>
   <van-card
       v-for="user in userList"
       :desc="user.username"
