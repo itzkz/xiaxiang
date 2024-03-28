@@ -33,4 +33,7 @@ const onChange = (index: any) => showToast(`标签 ${index}`);
 
 <style scoped>
 /* 可以添加一些局部样式 */
+#content{
+  padding-bottom: 50px;
+}
 </style>

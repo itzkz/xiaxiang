@@ -5,6 +5,7 @@ import {onMounted} from "vue";
 import {showToast} from "vant";
 import qs from 'qs';
 import {ref} from "vue";
+import UserCardList from "../components/UserCardList.vue";
 
 const router = useRoute()
 const {tags} = router.query
@@ -21,7 +22,7 @@ onMounted(async () => {
       }
     });
     // console.log('/user/search/tags succeed', response);
-    const userListData = response?.data?.data;
+    const userListData = response?.data;
     if (userListData) {
       userListData.forEach(user => {
         if (user.tags && typeof user.tags === 'string') {
@@ -29,35 +30,21 @@ onMounted(async () => {
         }
       });
       userList.value = userListData;
-
+      showToast("请求成功")
+      console.log(userList,"用户列表")
     }
   } catch (error) {
     console.error('/user/search/tags error', error);
     showToast('请求失败');
   }
 });
+
 </script>
 
 <template>
-  <van-empty image="search" description="未查询到用户" v-if="!userList ||userList.length < 1"/>
-  <van-card
-      v-for="user in userList"
-      :desc="user.username"
-      :title="user.profile"
-      :thumb="user.avatarurl"
 
-  >
-    <template #tags>
-      <van-tag plain type="primary" v-for="tag in user.tags" :key="tag"
-               style="margin-top: 8px; margin-right: 8px">
-        {{ tag }}
-      </van-tag>
-    </template>
-    <template #footer>
-      <van-button size="mini">关注</van-button>
-      <van-button size="mini">匹配队伍</van-button>
-    </template>
-  </van-card>
+  <van-empty image="search" description="未查询到用户" v-if="!userList ||userList.length < 1"/>
+  <UserCardList :user-list="userList" :loading="true" />
 </template>
 
 <style scoped>
