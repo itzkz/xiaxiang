@@ -12,7 +12,7 @@ onMounted(async () => {
     },
 
   });
-  const userListData = res?.data;
+  const userListData = res?.data.records;
 
   if (userListData) {
     userListData.forEach(user => {
@@ -26,7 +26,6 @@ onMounted(async () => {
     });
     userList.value = userListData;
   }
-  console.log(userList,111111111)
 });
 
 
@@ -37,7 +36,7 @@ import {onMounted, ref} from "vue";
 <template>
 
   <UserCardList :user-list="userList" :loading="true"/>
-  <!--  <van-empty image="search" description="暂无用户" v-if="!userList ||userList.length < 1"/>-->
+    <van-empty image="search" description="暂无用户" v-if="!userList ||userList.length < 1"/>
 
 </template>
 

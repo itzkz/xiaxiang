@@ -1,20 +1,12 @@
 <template>
-  <div v-if="user">
-    <van-cell title="头像" is-link @click="toEdit('avatarurl',user.avatarurl,'头像')">
-      <img :src="user.avatarurl" alt="" style="height: 46px">
-    </van-cell>
-    <van-cell title="昵称" is-link :value="user.username" @click="toEdit('username',
-user.username, '昵称')"/>
-    <van-cell title="账号" :value="user.useraccount"/>
-    <van-cell title="性别" is-link :value="user.gender" @click="toEdit('gender',
-user.gender, '性别')"/>
-    <van-cell title="电话" is-link :value="user.phone" @click="toEdit('phone', user.phone,
-'电话')"/>
-    <van-cell title="邮箱" is-link :value="user.email" @click="toEdit('email', user.email,
-'邮箱')"/>
-    <van-cell title="注册时间" :value="user.createtime"/>
 
-  </div>
+<div>
+
+
+  <van-cell title="个人中心" is-link to="/user/detail" />
+  <van-cell title="我创建的队伍" is-link to="/team/create" />
+  <van-cell title="我加入的队伍" is-link to="/team/join" />
+</div>
 </template>
 <script setup lang="ts">
 import {onMounted, ref} from "vue";

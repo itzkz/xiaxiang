@@ -22,6 +22,7 @@ const props = withDefaults(defineProps<UserCardListProps>(), {
             :thumb="user.avatarurl"
 
   >
+
     <template #tags>
       <van-tag plain type="primary" v-for="tag in user.tags" :key="tag"
                style="margin-top: 8px; margin-right: 8px">
