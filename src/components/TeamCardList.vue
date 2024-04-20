@@ -19,6 +19,9 @@ const props = withDefaults(defineProps<TeamCardListProps>(), {
   // @ts-ignore
   teamList: [] as TeamType[],
 });
+
+
+
 // 格式化时间函数
 const formatTime = (time: Date): string => {
   const date = new Date(time);
@@ -120,9 +123,15 @@ const doDeleteTeam = async (id: number) => {
 }
 
 
+
+
+
+
 </script>
 
 <template>
+
+  <van-empty image="search" description="未查询到队伍" v-if="!teamList ||teamList.length < 1"/>
   <div id="teamCardList"
 
   >
@@ -131,8 +140,8 @@ const doDeleteTeam = async (id: number) => {
               v-for="team in props.teamList"
               :desc="team.name"
               :title="team.description"
-              :thumb="iKun"
-    >
+              :thumb="iKun">
+
       <template #tags>
         <van-tag plain type="danger" style="margin-top: 8px; margin-right: 8px">
           {{ teamStatusEnum[team.status] }}
@@ -140,7 +149,7 @@ const doDeleteTeam = async (id: number) => {
       </template>
       <template #bottom>
         <div>
-          {{ `队伍人数: ${team.hasjoinnum}/${team.maxnum}` }}
+          {{ `队伍人数: ${team.joinTeamUser?.length}/${team.maxnum}` }}
         </div>
         <div v-if="team.expiretime">
           {{ '过期时间: ' + formatTime(team.expiretime) }}
@@ -151,16 +160,20 @@ const doDeleteTeam = async (id: number) => {
 
       </template>
       <template #footer>
-        <van-button size="small" type="primary" v-if="team.userid !== currentUser?.id" plain
+        <!-- 加入队伍： 仅非队伍创建人、且未加入队伍的人可见-->
+        <van-button size="small" type="primary" v-if=" team.userid !== currentUser.id &&
+      !team?.joinTeamUser?.some(user => user.id === currentUser.id)" plain
                     @click="preJoinTeam(team)">加入队伍
         </van-button>
+        <!-- 更新队伍：仅创建人可见-->
         <van-button v-if="team.userid === currentUser?.id" size="small" plain
                     @click="doUpdateTeam(team.id)">更新队伍
         </van-button>
         <!-- 仅加入队伍可见 -->
-        <van-button v-if="team.userid !== currentUser?.id " size="small" plain
+        <van-button v-if="team?.joinTeamUser?.some(user => user.id === currentUser.id)" size="small" plain
                     @click="doQuitTeam(team.id)">退出队伍
         </van-button>
+        <!-- 更新队伍：仅创建人可见-->
         <van-button v-if="team.userid === currentUser?.id" size="small" type="danger" plain
                     @click="doDeleteTeam(team.id)">解散队伍
         </van-button>

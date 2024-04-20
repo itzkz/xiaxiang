@@ -57,10 +57,13 @@
     </template>
   </van-search>
 
+  <van-floating-bubble id="searchTeam" icon="plus" axis="xy" magnetic="x"  @click="onClick" />
 
-  <van-button type="primary" to="/team/add">创建队伍</van-button>
+  <van-pull-refresh v-model="loading" @refresh="onRefresh">
+    <TeamCardList :team-list="teamList"></TeamCardList>
+  </van-pull-refresh>
 
-  <TeamCardList :team-list="teamList"></TeamCardList>
+
 
 
 </template>
@@ -70,13 +73,25 @@ import TeamCardList from "../components/TeamCardList.vue";
 import {onMounted, ref} from "vue";
 import myAxios from "../plugins/myAxios.ts";
 import {showToast} from "vant";
-
+import {useRouter} from "vue-router";
+const router = useRouter();
 const searchText = ref('');
+const loading = ref(false);
+const onRefresh = () => {
+  setTimeout(() => {
+    showToast('刷新成功');
+    loading.value = false;
+  }, 1000);
+};
 
 const showForm = ref(false);
 const onClickButton = () => {
   showForm.value = true; // 点击按钮时显示表单
 };
+const onClick = () => {
+  router.push('/team/add')
+};
+
 const onSubmit = async () => {
   // 处理表单提交逻辑
   const res = await myAxios.get("/team/list", {
@@ -116,6 +131,7 @@ const listTeam = async (val = '') => {
     params: {
       searchText: val,
       pageNum: 1,
+      pageSize:8,
     }
   })
   if (res?.code === 0) {
@@ -133,6 +149,8 @@ onMounted(() => {
 
 </script>
 <style>
-
+#searchTeam{
+ top: -75px;
+}
 
 </style>

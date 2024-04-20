@@ -9,19 +9,27 @@ import TeamPage from "../pages/TeamPage.vue";
 import UserJoinTeamPage from "../pages/UserJoinTeamPage.vue";
 import UserCreateTeamPage from "../pages/UserCreateTeamPage.vue";
 import TeamAddPage from "../pages/TeamAddPage.vue";
+import TeamUpdate from "../pages/TeamUpdate.vue";
+import UserRegister from "../pages/UserRegister.vue";
+import FollowUserList from "../pages/FollowUserList.vue";
+import FansUserList from "../pages/FansUserList.vue";
 
 const routes = [
-    {path: '/', component: index},
-    {path: '/team', component: TeamPage},
-    {path: '/user', component: UserPage},
-    {path: '/search', component: SearchUser},
-    {path: '/user/list', component: SearchResultPage},
-    {path: '/user/edit', component: UserEdit},
-    {path: '/user/login', component: UserLogin},
-    {path: '/user/detail', component: UserDetailPage},
-    {path: '/team/join', component: UserJoinTeamPage},
-    {path: '/team/create', component: UserCreateTeamPage},
-    {path: '/team/add', component: TeamAddPage},
+    {path: '/',  component: index},
+    {path: '/team',title:"找队伍", component: TeamPage},
+    {path: '/user',title:"个人信息", component: UserPage},
+    {path: '/search',title:"找伙伴", component: SearchUser},
+    {path: '/user/list',title:"用户列表", component: SearchResultPage},
+    {path: '/user/edit',title:"编辑信息", component: UserEdit},
+    {path: '/user/login',title:"登录", component: UserLogin},
+    {path: '/user/detail',title:"个人详情", component: UserDetailPage},
+    {path: '/team/join', title:"我加入的队伍",component: UserJoinTeamPage},
+    {path: '/team/create',title:"我创建的队伍", component: UserCreateTeamPage},
+    {path: '/team/add', title:"创建队伍",component: TeamAddPage},
+    {path: '/team/update', title:"更新队伍",component: TeamUpdate},
+    {path: '/user/register', title:"注册",component: UserRegister},
+    {path: '/user/follow', title:"关注列表",component: FollowUserList},
+    {path: '/user/fans', title:"粉丝列表",component: FansUserList},
 
 ]
 export default routes;
