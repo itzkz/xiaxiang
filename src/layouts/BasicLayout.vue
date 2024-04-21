@@ -2,7 +2,7 @@
 import { useRouter} from "vue-router";
 import routes from "../config/routes.ts";
 import {ref} from "vue";
-import {showToast} from "vant";
+
 
 const router =useRouter();
 const onClickLeft = () => {

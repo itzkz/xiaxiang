@@ -13,6 +13,7 @@ import TeamUpdate from "../pages/TeamUpdate.vue";
 import UserRegister from "../pages/UserRegister.vue";
 import FollowUserList from "../pages/FollowUserList.vue";
 import FansUserList from "../pages/FansUserList.vue";
+import SelectTagsPage from "../pages/SelectTagsPage.vue";
 
 const routes = [
     {path: '/',  component: index},
@@ -30,6 +31,7 @@ const routes = [
     {path: '/user/register', title:"注册",component: UserRegister},
     {path: '/user/follow', title:"关注列表",component: FollowUserList},
     {path: '/user/fans', title:"粉丝列表",component: FansUserList},
+    {path: '/user/tags', title:"选择标签",component: SelectTagsPage},
 
 ]
 export default routes;

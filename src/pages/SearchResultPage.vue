@@ -10,7 +10,7 @@ import UserCardList from "../components/UserCardList.vue";
 const router = useRoute()
 const {tags} = router.query
 const userList = ref([]);
-
+const loading = ref(false);
 onMounted(async () => {
   try {
     const response = await myAxios.get('/user/search/tags', {
@@ -30,7 +30,6 @@ onMounted(async () => {
         }
       });
       userList.value = userListData;
-      showToast("请求成功")
       console.log(userList,"用户列表")
     }
   } catch (error) {
@@ -38,13 +37,20 @@ onMounted(async () => {
     showToast('请求失败');
   }
 });
-
+const onRefresh = () => {
+  setTimeout(() => {
+    showToast('刷新成功');
+    loading.value = false;
+  }, 1000);
+};
 </script>
 
 <template>
 
   <van-empty image="search" description="未查询到用户" v-if="!userList ||userList.length < 1"/>
-  <UserCardList :user-list="userList" :loading="true" />
+  <van-pull-refresh v-model="loading" @refresh="onRefresh">
+    <user-card-list :user-list="userList" :loading="loading"/>
+  </van-pull-refresh>
 </template>
 
 <style scoped>

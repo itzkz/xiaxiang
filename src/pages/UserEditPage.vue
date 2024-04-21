@@ -1,7 +1,13 @@
 <template>
   <van-form @submit="onSubmit">
     <van-cell-group inset>
-      <van-field
+      <div v-if="editUser.editKey==='tags'">
+        <van-cell title="我的标签" is-link :value="editUser.currentValue" @click.native.prevent/>
+        <van-button round block type="primary" native-type="submit" to="/user/tags">
+          去修改
+        </van-button>
+      </div>
+      <van-field v-if="editUser.editKey!=='tags'"
           v-model="editUser.currentValue"
           :name="editUser.editKey"
           :label="editUser.editName"
@@ -9,7 +15,7 @@
       />
     </van-cell-group>
     <div style="margin: 16px;">
-      <van-button round block type="primary" native-type="submit">
+      <van-button round block type="primary" native-type="submit" v-if="editUser.editKey!=='tags'">
         提交
       </van-button>
     </div>

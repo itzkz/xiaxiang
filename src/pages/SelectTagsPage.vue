@@ -1,13 +1,4 @@
 <template>
-  <form action="/">
-    <van-search
-        v-model="searchText"
-        show-action
-        placeholder="请输入要搜索的标签"
-        @search="onSearch"
-        @cancel="onCancel"
-    />
-  </form>
   <van-divider content-position="left">已选标签</van-divider>
   <div v-if="activeIds.length === 0">请选择标签</div>
   <van-row gutter="16" style="padding: 0 16px">
@@ -24,7 +15,9 @@
       :items="tagList"
   />
   <div style="padding: 12px">
-    <van-button block type="primary" @click="doSearchResult">搜索</van-button>
+    <van-button block type="primary" @click="doSearchResult">保存</van-button>
+    <van-cell title="" @click="goToHomePage" value="暂不选择"></van-cell>
+
   </div>
 </template>
 
@@ -33,55 +26,13 @@ import {onMounted, ref} from 'vue';
 import {useRouter} from "vue-router";
 import myAxios from "../plugins/myAxios.ts";
 import {showToast} from "vant";
-
 const router = useRouter()
-
-const searchText = ref('');
-
-// const originTagList = [{
-//   text: '性别',
-//   children: [
-//     {text: '男', id: '男'},
-//     {text: '女', id: '女'},
-//   ],
-// },
-//   {
-//     text: '年级',
-//     children: [
-//       {text: '大一', id: '大一'},
-//       {text: '大二', id: '大二'},
-//       {text: '大3', id: '大3'},
-//       {text: '大4', id: '大4'},
-//       {text: '大5', id: '大5aaaaaaa'},
-//       {text: '大6', id: '大6aaaaaaa'},
-//     ],
-//   },
-//   {
-//     text: '学科',
-//     children: [
-//       {text: 'Java', id: 'Java'},
-//       {text: 'Python', id: 'Python'},
-//     ],
-//   },
-// ]
-
-
+const goToHomePage = () => {
+  router.replace("/")
+}
 /**
  * 搜索过滤
  */
-const onSearch = () => {
-  router.push({
-    path: '/user/list',
-    query: {
-      tags: searchText.value,
-    }
-  })
-}
-const onCancel = () => {
-  searchText.value = '';
-  router.back();
-};
-
 // 已选中的标签
 const activeIds = ref([]);
 const activeIndex = ref(0);
@@ -96,19 +47,25 @@ const doClose = (tag: string) => {
 /**
  * 执行搜索
  */
-const doSearchResult = () => {
+const doSearchResult =async () => {
   if (activeIds.value.length <= 10) {
-    router.push({
-      path: '/user/list',
-      query: {
-        tags: activeIds.value
-      }
-    });
+   const res =await myAxios.post("/user/save/tags", {
+      tagNameList: activeIds.value
+    })
+    if (res.code===0){
+      showToast("保存标签成功")
+     await router.replace("/");
+    }else {
+      showToast("保存标签失败")
+    }
   } else {
     // 提示用户已达到最大选择数量
     showToast("最多只能选择10个标签");
   }
 };
+
+
+
 const responseData = ref([]);
 let tagList = ref([]);
 

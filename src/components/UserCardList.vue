@@ -61,7 +61,7 @@ const discard = async (user: any) => {
       <template #footer>
         <van-button size="mini" @click="follow(user)" v-if="!followStatus[user.id]"  type="primary">关注</van-button>
         <van-button size="mini" @click="discard(user)" v-if="followStatus[user.id]" type="danger">取关</van-button>
-        <van-button size="mini">匹配队伍</van-button>
+        <van-button size="mini">联系</van-button>
       </template>
     </van-card>
   </van-skeleton>

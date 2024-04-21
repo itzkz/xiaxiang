@@ -39,10 +39,11 @@
 import {ref} from 'vue';
 import myAxios from "../plugins/myAxios.ts";
 import {showToast} from "vant";
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {iKun} from "../constants/teamStatusEnum.ts";
 
 const route = useRoute();
+const router = useRouter();
 const userAccount = ref('');
 const userPassword = ref('');
 const onSubmit = async () => {
@@ -50,11 +51,14 @@ const onSubmit = async () => {
     userAccount: userAccount.value,
     userPassword: userPassword.value
   })
-  console.log(res)
   if (res.code === 0) {
     showToast("登录成功");
-    const redirect = route.query?.redirect as string ?? '/';
-    window.location.replace(redirect);
+    if (res.data.tagsisnoll){
+      await router.replace("/user/tags")
+    }else {
+      const redirect = route.query?.redirect as string ?? '/';
+      window.location.replace(redirect);
+    }
   } else {
     showToast("登录失败"+"  "+ res.message);
   }

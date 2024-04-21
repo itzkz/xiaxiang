@@ -12,6 +12,9 @@ user.gender, '性别')"/>
 '电话')"/>
     <van-cell title="邮箱" is-link :value="user.email" @click="toEdit('email', user.email,
 '邮箱')"/>
+    <van-cell title="我的标签" is-link :value="user.tags" @click="toEdit('tags', user.tags,
+'标签')"/>
+
     <van-cell title="注册时间" :value="user.createtime"/>
 
   </div>
