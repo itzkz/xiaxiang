@@ -29,58 +29,58 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue';
+import {onMounted, ref} from 'vue';
 import {useRouter} from "vue-router";
+import myAxios from "../plugins/myAxios.ts";
+import {showToast} from "vant";
 
 const router = useRouter()
 
 const searchText = ref('');
 
-const originTagList = [{
-  text: '性别',
-  children: [
-    {text: '男', id: '男'},
-    {text: '女', id: '女'},
-  ],
-},
-  {
-    text: '年级',
-    children: [
-      {text: '大一', id: '大一'},
-      {text: '大二', id: '大二'},
-      {text: '大3', id: '大3'},
-      {text: '大4', id: '大4'},
-      {text: '大5', id: '大5aaaaaaa'},
-      {text: '大6', id: '大6aaaaaaa'},
-    ],
-  },
-  {
-    text: '学科',
-    children: [
-      {text: 'Java', id: 'Java'},
-      {text: 'Python', id: 'Python'},
-    ],
-  },
-]
+// const originTagList = [{
+//   text: '性别',
+//   children: [
+//     {text: '男', id: '男'},
+//     {text: '女', id: '女'},
+//   ],
+// },
+//   {
+//     text: '年级',
+//     children: [
+//       {text: '大一', id: '大一'},
+//       {text: '大二', id: '大二'},
+//       {text: '大3', id: '大3'},
+//       {text: '大4', id: '大4'},
+//       {text: '大5', id: '大5aaaaaaa'},
+//       {text: '大6', id: '大6aaaaaaa'},
+//     ],
+//   },
+//   {
+//     text: '学科',
+//     children: [
+//       {text: 'Java', id: 'Java'},
+//       {text: 'Python', id: 'Python'},
+//     ],
+//   },
+// ]
 
-// 标签列表
-let tagList = ref(originTagList);
 
 /**
  * 搜索过滤
  */
-const onSearch = () => {
-  tagList.value = originTagList.map(parentTag => {
-    const tempChildren = [...parentTag.children];
-    const tempParentTag = {...parentTag};
-    tempParentTag.children = tempChildren.filter(item => item.text.includes(searchText.value));
-    return tempParentTag;
-  });
+// const onSearch = () => {
+//   tagList.value.map(parentTag => {
+//     const tempChildren = [...parentTag.children];
+//     const tempParentTag = {...parentTag};
+//     tempParentTag.children = tempChildren.filter(item => item.text.includes(searchText.value));
+//     return tempParentTag;
+//   });
 
-}
+// }
 const onCancel = () => {
   searchText.value = '';
-  tagList.value = originTagList;
+  router.back();
 };
 
 // 已选中的标签
@@ -88,7 +88,7 @@ const activeIds = ref([]);
 const activeIndex = ref(0);
 
 // 移除标签
-const doClose = (tag:string) => {
+const doClose = (tag: string) => {
   activeIds.value = activeIds.value.filter(item => {
     return item !== tag;
   })
@@ -106,7 +106,37 @@ const doSearchResult = () => {
   })
 
 }
+const responseData = ref([]);
+let tagList = ref([]);
 
+// 转换函数
+function convertDataToOriginTagList(data: Record<string, string[]>): { text: string, children: { text: string, id: string }[] }[] {
+  const originTagList = [];
+  for (const category in data) {
+    const categoryObj = {
+      text: category,
+      children: data[category].map(tag => ({text: tag, id: tag}))
+    };
+    originTagList.push(categoryObj);
+  }
+
+  return originTagList;
+}
+
+onMounted(async () => {
+  try {
+    const res = await myAxios.get("tags/list");
+    if (res.code === 0) {
+      responseData.value = res.data;
+      tagList.value = convertDataToOriginTagList(res.data);
+    } else {
+      showToast("获取标签列表失败");
+    }
+  } catch (error) {
+    console.error("网络请求失败:", error);
+    showToast("网络请求失败，请稍后重试");
+  }
+});
 </script>
 
 <style scoped>
