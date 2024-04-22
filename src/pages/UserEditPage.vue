@@ -7,11 +7,8 @@
           去修改
         </van-button>
       </div>
-      <van-field v-if="editUser.editKey!=='tags'"
-          v-model="editUser.currentValue"
-          :name="editUser.editKey"
-          :label="editUser.editName"
-          :placeholder="`请输入${editUser.editName}`"
+      <van-field v-if="editUser.editKey!=='tags'" v-model="editUser.currentValue" :name="editUser.editKey"
+                 :label="editUser.editName" :placeholder="`请输入${editUser.editName}`"
       />
     </van-cell-group>
     <div style="margin: 16px;">
@@ -27,16 +24,16 @@ import {ref} from "vue";
 import myAxios from "../plugins/myAxios.ts";
 import {getCurrentUser} from "../interface/user";
 import {showToast} from "vant";
+
 const route = useRoute();
-const router =useRouter()
+const router = useRouter()
 const editUser = ref({
   editKey: route.query.editKey,
   currentValue: route.query.currentValue,
   editName: route.query.editName
 })
-
-const onSubmit =async () => {
-  const currentUser =await getCurrentUser();
+const onSubmit = async () => {
+  const currentUser = await getCurrentUser();
   if (!currentUser) {
     showToast('用户未登录');
     return;
